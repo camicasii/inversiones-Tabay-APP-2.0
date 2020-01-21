@@ -1,25 +1,24 @@
 import React from 'react';
 import './App.css';
-import  ApolloClient from 'apollo-boost';
-import { ApolloProvider,} from '@apollo/react-hooks';
-import MyApollo from './MyApollo';
-
-
-const client = new ApolloClient({
-  uri: "http://localhost:4001/graphql"
-});
+import { GraphQLClient, ClientContext } from 'graphql-hooks'
+import AddCuenta from './components/Cuentas/add/AddCuenta';
+const client = new GraphQLClient({
+  //url:"http://localhost:4001/graphql",  
+  url:"https://tabay-ca-api.herokuapp.com/graphql"
+  //FormData: form_node
+})
 
 function App() {
   
   return (
-    <ApolloProvider client={client}>
-    <div className="App">
-      <header className="App-header">
+    <ClientContext.Provider value={client}>    
+    <div className="container-fluid p-0">
+      
         <h2 >hola</h2>
-        <MyApollo/>
-      </header>
+      <AddCuenta/>
+      
     </div>
-    </ApolloProvider>
+    </ClientContext.Provider>    
   );
 }
 

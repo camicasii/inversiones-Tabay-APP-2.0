@@ -1,85 +1,129 @@
 import React,{useRef} from 'react';
 import  {gql} from 'apollo-boost';
-import { useQuery,useMutation,useApolloClient, } from '@apollo/react-hooks';
+import { createReadStream } from 'fs';
+//import { useQuery,useMutation,useApolloClient } from '@apollo/react-hooks';
 import Axios from 'axios';
-
-const GET_DOGS = gql`
-  {
-    cuentas {
-    ID
-  }
-  }`
-  const UPLOAD=gql`
-    mutation($file: MyUpload!) {
-      singleUpload2(file:$file)
-    }
-  `  
-const UPLOAD_3=gql`
-  mutation($file: Upload!) {
-    singleUpload(image:$file)
-
+import { useMutation,useQuery } from 'graphql-hooks'
+const UPLOAD_3=`
+  mutation ($file: Upload!) {
+    singleUpload(file:$file)
   }
 `
-const UPLOAD_4=gql`
-  mutation($file: Upload!) {
-    singleUpload(file:$file)
+const edita=`
+mutation  ($file: Upload!) {
+  editCuenta(id:24,input:
+    {
+      DESCIPCION:"Jhonattan"
+    },file:$file) 
+}
 
+  `
+const Cuentas_=`
+  {
+   cuentas{
+     ID
+   }
   }
 `
 
 export default function(props) {
     //const { loading, error, data } = useQuery(GET_DOGS);
-    const [singleUpload] = useMutation(UPLOAD_3)    
+    const [singleUpload] = useMutation(edita)        
     const ff = useRef()
-    const upload = useRef()
+    const upload = useRef(null)
     //if (loading) return <p>Loading...</p>;
-    //if (error) return <p>Error :(</p>;
-    //if (!loading) console.log(data);
-    const onSummib = async (e) =>{
-      e.preventDefault()
-      
-      
-      console.log(ff.current.files);      
-      
-      const [file]=ff.current.files
-      
-      const form_ =new FormData()
-      form_.append("value",file)
-      
 
-      console.log(form_);
-      
-      const a =await (await singleUpload({variables:{file:form_}})).data
-      console.log(ff);
-    }
+    
+    
+  
     const onChange=async (e)=>{
-      e.preventDefault()      
+      e.preventDefault()            
       const [file] = upload.current.files
       console.log(file);
-      let formData = new FormData();
-      formData.append('upload',file);
-      Axios.post("/upload",formData,
-      {
+      await singleUpload({variables:{file}})
+      return
+     
+      /*Axios.post("/upload",formData,
+      {body:{
+        id:18
+      },
         headers:{'Content-Type': 'multipart/form-data'}
-      }).then(res=>console.log(res)).catch(res=>console.log("fallo")      )
-
-
+      }).then(res=>console.log(res)).catch(res=>console.log("fallo"))*/
+    }
+    const onSubmi=async (e)=>{    
+      e.preventDefault()            
+      const [file] = upload.current.files
+      
+      const data =await singleUpload({variables:{file}})
+      console.log(data);
       
     }
       return<>
-      <input type="file" ref={upload}  onChange={onChange}></input>
-      <hr></hr>
-        <form encType="multipart/form-data"   action="/upload/" method="POST">
-        <input type="file"  name="upload"></input>
-        <button type="submit">Hola</button>
-        </form>
-       <form onSubmit={onSummib} encType="multipart/form-data"  >
-        <label>Input file</label>
-        <input type="file" ref={ff} name="upload" ></input>
-        <button type="submit">upload</button>
+      <form onSubmit={onSubmi} encType="multipart/form-data" ref={ff}>
+      <input type="file" ref={upload}  ></input>      
+      <button type="submit">sdafasdf</button>
       </form>
       </>
 
 }
 
 
+/***
+ * 
+ * 
+ * 
+
+async (e)=>{
+      e.preventDefault()      
+      const [file] = upload.current.files
+      console.log(file);
+      let formData = new FormData();
+      formData.append('upload',file);  
+      const file2 ={
+        Location:{filename: "String!",
+        mimetype: "String!",
+        encoding: "String!"},
+        Path:"Fasdfsadfsadfsadfasd"
+      }
+      try{
+      await singleUpload({variables:{file:formData}})    
+    }
+    catch{
+console.log(Error);
+
+      }
+      Axios.post("/upload",formData,
+      {body:{
+        id:18
+      },
+        headers:{'Content-Type': 'multipart/form-data'}
+      }).then(res=>console.log(res)).catch(res=>console.log("fallo"))
+    }
+    e.preventDefault()      
+     const [file] = upload.current.files
+     console.log(file);
+     let formData = new FormData();
+     formData.append('upload',file);  
+     const file2 ={
+       Location:{filename: "String!",
+       mimetype: "String!",
+       encoding: "String!"},
+       Path:"Fasdfsadfsadfsadfasd"
+     }
+     try{
+     await singleUpload({variables:{file:formData}})    
+   }
+   catch{
+console.log(Error);
+
+     }
+     Axios.post("/upload",formData,
+     {body:{
+       id:18
+     },
+       headers:{'Content-Type': 'multipart/form-data'}
+     }).then(res=>console.log(res)).catch(res=>console.log("fallo"))
+   }
+
+
+ */

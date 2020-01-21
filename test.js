@@ -1,3 +1,10 @@
-const aa =()=>{let a = [0,1,2];};
-aa()
-console.log(a);
+const aa =(...args)=>{
+    let suma=0;
+    args.map(v=>console.log(v)
+    )
+
+    return args
+
+};
+aa(1,2,3,4)
+

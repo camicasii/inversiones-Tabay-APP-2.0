@@ -15,7 +15,7 @@ function App() {
     <div className="container-fluid p-0">
       
         <h2 >hola</h2>
-      <AddCuenta/>
+      <AddCuenta concepto={true} conceptoString={"pago"}/>
       
     </div>
     </ClientContext.Provider>    

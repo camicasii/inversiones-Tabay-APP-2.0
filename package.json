@@ -11,7 +11,7 @@
     "apollo-boost": "^0.4.7",
     "apollo-cache-inmemory": "^1.6.5",
     "apollo-upload-client": "^12.1.0",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "form-data": "^3.0.0",
     "formdata-node": "^2.1.0",
     "graphql": "^14.5.8",
